@@ -6,11 +6,16 @@ import {
   UPDATE
 } from '../actions/actionTypes';
 
-const users = {};
+const usersStorage = {};
+const messagesStorage = {};
 
 const messages = (state = [], action) => {
-  if (action.user && !users[action.user.id]) {
-    users[action.user.id] = action.user;
+  if (action.user && !usersStorage[action.user.id]) {
+    usersStorage[action.user.id] = action.user;
+  }
+
+  if (action.message && !messagesStorage[action.message.id]) {
+    messagesStorage[action.message.id] = action.message;
   }
 
   switch (action.type) {
@@ -18,16 +23,9 @@ const messages = (state = [], action) => {
     return [
       ...state,
       {
-        message: {
-          id: action.message.id,
-          text: action.message.text
-        },
+        message: messagesStorage[action.message.id],
         type: action.type,
-        user: {
-          display_name: action.user.display_name,
-          id: action.user.id,
-          user_name: action.user.user_name,
-        }
+        user: usersStorage[action.user.id]
       }
     ];
   case DELETE:
@@ -50,11 +48,7 @@ const messages = (state = [], action) => {
       ...state,
       {
         type: action.type,
-        user: {
-          display_name: action.user.display_name,
-          id: action.user.id,
-          user_name: action.user.user_name
-        }
+        user: usersStorage[action.user.id]
       }
     ];
   case DISCONNECT:
@@ -62,51 +56,31 @@ const messages = (state = [], action) => {
       ...state,
       {
         type: action.type,
-        user: {
-          display_name: action.user.display_name,
-          id: action.user.id,
-          user_name: action.user.user_name
-        }
+        user: usersStorage[action.user.id]
       }
     ];
   case UPDATE:
     if (action.message) {
-      const copiedState = state.slice();
+      messagesStorage[action.message.id].text = action.message.text;
 
-      for (let i = 0; i < copiedState.length; i++) {
-        if (copiedState[i].message && action.message.id === copiedState[i].message.id) {
-          copiedState[i].message = {
-            id: action.message.id,
-            text: action.message.text
-          };
-        }
-      }
-
-      return copiedState;
+      return [
+        ...state
+      ];
     }
 
     if (action.user) {
-      const copiedState = state.slice();
-      let previousDisplayName;
+      const previousDisplayName = usersStorage[action.user.id].display_name;
 
-      for (let i = 0; i < copiedState.length; i++) {
-        if (copiedState[i].user && action.user.id === copiedState[i].user.id) {
-          previousDisplayName = copiedState[i].user.display_name;
-          copiedState[i].user = {
-            display_name: action.user.display_name,
-            id: action.user.id,
-            user_name: action.user.user_name
-          };
-        }
-      }
+      usersStorage[action.user.id].display_name = action.user.display_name;
+      usersStorage[action.user.id].user_name = action.user.user_name;
 
       return [
-        ...copiedState,
+        ...state,
         {
           type: action.type,
           user: {
             previous_display_name: previousDisplayName,
-            display_name: action.user.display_name
+            display_name: usersStorage[action.user.id].display_name
           }
         }
       ];
