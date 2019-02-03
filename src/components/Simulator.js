@@ -17,23 +17,23 @@ export default class Simulator extends Component {
   }
 
   render() {
-    const { timeLineData, initSimulator } = this.props;
+    const { timeLineData, userInfo, initSimulator } = this.props;
 
     const renderTimeLineData = () => {
       return timeLineData.map((appData, index) => {
-        const { message, type, user } = appData;
+        const { message, type, userId, previousDisplayName, displayName } = appData;
         const keyIndex = index;
 
         const renderData = () => {
           switch (type) {
           case MESSAGE:
-            // action종류 = *, @, _, \n, 
-            let newText = message.text.replace(/\\n/, '<br />')
+            // action종류 = *, @, _,
+            // let newText = message.text.replace(/\\n/, '<br />');
 
             return (
               <div className="Simulator__history__message">
-                <span className="Simulator__history__message__name">{user.display_name}</span>
-                <p className="Simulator__history__message__text">&#x279C;&nbsp;{newText}</p>
+                <span className="Simulator__history__message__name">{userInfo[userId].display_name}</span>
+                <p className="Simulator__history__message__text">&#x279C;&nbsp;{message.text}</p>
               </div>
             );
           case CONNECT:
@@ -41,7 +41,7 @@ export default class Simulator extends Component {
               <div className="Simulator__history__connect">
                 <span className="Simulator__history__connect__message">
                   Awesome! User
-                  <span>{user.display_name}</span>
+                  <span>{userInfo[userId].display_name}</span>
                   is
                   <span>connect.</span>
                 </span>
@@ -52,7 +52,7 @@ export default class Simulator extends Component {
               <div className="Simulator__history__disconnect">
                 <span className="Simulator__history__disconnect__message">
                   Oh! User
-                  <span>{user.display_name}</span>
+                  <span>{userInfo[userId].display_name}</span>
                   is
                   <span>disconnect. TT</span>
                 </span>
@@ -61,9 +61,9 @@ export default class Simulator extends Component {
           case UPDATE:
             return (
               <div className="Simulator__history__update">
-                <span>"{user.previous_display_name}"</span>
+                <span>"{previousDisplayName}"</span>
                 changes the name to
-                <span>"{user.display_name}"</span>
+                <span>"{displayName}"</span>
               </div>
             );
           default:
@@ -85,13 +85,30 @@ export default class Simulator extends Component {
       });
     };
 
+    const renderUserOnlineInfo = () => {
+      const userNow = Object.values(userInfo);
+
+      const renderedUser = userNow.map((user) => {
+        if (user.online) {
+          return (
+            <span key={user.id} className="Simulator__users__online">
+              {user.display_name}
+            </span>
+          );
+        }
+      })
+        .filter(item => item !== undefined);
+
+      return renderedUser.length ? renderedUser : false;
+    };
+
     return (
       <div className="Simulator">
         <div className="Simulator__header">
           vanilla_coding
         </div>
         <div className="Simulator__users">
-          여기유저들
+          {renderUserOnlineInfo() || (<p className="Simulator__users__empty">No users</p>)}
         </div>
         <div className="Simulator__history">
           {renderTimeLineData()}

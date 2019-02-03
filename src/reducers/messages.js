@@ -6,84 +6,108 @@ import {
   UPDATE
 } from '../actions/actionTypes';
 
-const usersStorage = {};
-const messagesStorage = {};
+const initialState = {
+  messages: [],
+  userInfo: {},
+  messageStorage: {}
+};
 
-const messages = (state = [], action) => {
-  if (action.user && !usersStorage[action.user.id]) {
-    usersStorage[action.user.id] = action.user;
+const messages = (state = initialState, action) => {
+  const userInfo = state.userInfo;
+  const messageStorage = state.messageStorage;
+
+  if (action.user && !userInfo[action.user.id]) {
+    userInfo[action.user.id] = {
+      id: action.user.id,
+      display_name: action.user.display_name,
+      online: true
+    };
   }
 
-  if (action.message && !messagesStorage[action.message.id]) {
-    messagesStorage[action.message.id] = action.message;
+  if (action.message && !messageStorage[action.message.id]) {
+    messageStorage[action.message.id] = {
+      id: action.message.id,
+      text: action.message.text
+    };
   }
 
   switch (action.type) {
   case MESSAGE:
-    return [
-      ...state,
-      {
-        message: messagesStorage[action.message.id],
-        type: action.type,
-        user: usersStorage[action.user.id]
-      }
-    ];
+    return {
+      messages: [
+        ...state.messages,
+        {
+          userId: action.user.id,
+          type: action.type,
+          message: messageStorage[action.message.id]
+        }
+      ],
+      userInfo,
+      messageStorage
+    };
   case DELETE:
     let messageIndex;
 
-    for (let i = 0; i < state.length; i++) {
-      if (state[i].message && action.message.id === state[i].message.id) {
+    for (let i = 0; i < state.messages.length; i++) {
+      if (state.messages[i].message && action.message.id === state.messages[i].message.id) {
         messageIndex = i;
 
         break;
       }
     }
 
-    return [
-      ...state.slice(0, messageIndex),
-      ...state.slice(messageIndex + 1)
-    ];
+    return Object.assign({}, state, {
+      messages: [
+        ...state.messages.slice(0, messageIndex),
+        ...state.messages.slice(messageIndex + 1)
+      ]
+    });
   case CONNECT:
-    return [
-      ...state,
-      {
-        type: action.type,
-        user: usersStorage[action.user.id]
-      }
-    ];
+    userInfo[action.user.id].online = true;
+
+    return Object.assign({}, state, {
+      messages: [
+        ...state.messages,
+        {
+          userId: action.user.id,
+          type: action.type
+        }
+      ]
+    });
   case DISCONNECT:
-    return [
-      ...state,
-      {
-        type: action.type,
-        user: usersStorage[action.user.id]
-      }
-    ];
+    userInfo[action.user.id].online = false;
+
+    return Object.assign({}, state, {
+      messages: [
+        ...state.messages,
+        {
+          userId: action.user.id,
+          type: action.type
+        }
+      ]
+    });
   case UPDATE:
     if (action.message) {
-      messagesStorage[action.message.id].text = action.message.text;
+      messageStorage[action.message.id].text = action.message.text;
 
-      return [
-        ...state
-      ];
+      return Object.assign({}, state);
     }
 
     if (action.user) {
-      const previousDisplayName = usersStorage[action.user.id].display_name;
+      const previousDisplayName = userInfo[action.user.id].display_name;
 
-      usersStorage[action.user.id].display_name = action.user.display_name;
-      usersStorage[action.user.id].user_name = action.user.user_name;
+      userInfo[action.user.id].display_name = action.user.display_name;
 
-      return [
-        ...state,
-        {
-          type: action.type,
-          user: {
-            previous_display_name: previousDisplayName,
-            display_name: usersStorage[action.user.id].display_name
+      return Object.assign({}, state, {
+        messages: [
+          ...state.messages,
+          {
+            type: action.type,
+            previousDisplayName,
+            displayName: action.user.display_name
           }
-        }
-      ];
+        ]
+      });
     }
 
     break;
