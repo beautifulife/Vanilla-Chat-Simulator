@@ -3,7 +3,8 @@
   flex-direction: column;
   width: 70%;
   max-width: 600px;
-  height: 90%;
+  height: 450px;
+  max-height: 90%;
   min-height: 10em;
   padding: 1em;
   border-radius: 15px;
@@ -15,10 +16,21 @@
   }
 
   &__users {
-    padding: 1em;
+    padding: 1em 0.5em;
     text-align: left;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 0.9rem;
+
+    &__empty {
+      text-align: center;
+    }
+
+    &__online {
+      margin-right: 10px;
+      padding: 0.5em;
+      border-radius: 10px;
+      background-color: rgba(211, 211, 211, 0.3)
+    }
   }
 
   &__history {
@@ -48,14 +60,14 @@
 
       &__message {
         span {
+          margin: 0px 5px;
+
           &:first-of-type {
-            color: #36c;
-            margin: 0px 5px;
+            font-weight: bold;
           }
 
           &:last-of-type {
             color: red;
-            margin: 0px 5px;
           }
         }
       }
@@ -70,11 +82,11 @@
           margin: 0px 5px;
 
           &:first-of-type {
-            color: #36c;
+            font-weight: bold;
           }
 
           &:last-of-type {
-            color: red;
+            color: #36c;
           }
         }
       }
