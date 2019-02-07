@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
 import logger from 'redux-logger';
-import messages from './reducers/messages';
 import './index.scss';
+import messages from './reducers/messages';
 import App from './components/App';
 
 const store = createStore(messages, applyMiddleware(logger));

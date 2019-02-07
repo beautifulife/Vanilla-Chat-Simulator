@@ -8,24 +8,23 @@ import {
 
 const initialState = {
   messages: [],
-  userInfo: {},
-  messageStorage: {}
+  usersById: {},
+  messagesById: {}
 };
 
 const messages = (state = initialState, action) => {
-  const userInfo = state.userInfo;
-  const messageStorage = state.messageStorage;
+  const { usersById, messagesById } = state;
 
-  if (action.user && !userInfo[action.user.id]) {
-    userInfo[action.user.id] = {
+  if (action.user && !usersById[action.user.id]) {
+    usersById[action.user.id] = {
       id: action.user.id,
       display_name: action.user.display_name,
       online: true
     };
   }
 
-  if (action.message && !messageStorage[action.message.id]) {
-    messageStorage[action.message.id] = {
+  if (action.message && !messagesById[action.message.id]) {
+    messagesById[action.message.id] = {
       id: action.message.id,
       text: action.message.text
     };
@@ -39,11 +38,11 @@ const messages = (state = initialState, action) => {
         {
           userId: action.user.id,
           type: action.type,
-          message: messageStorage[action.message.id]
+          message: messagesById[action.message.id]
         }
       ],
-      userInfo,
-      messageStorage
+      usersById,
+      messagesById
     };
   case DELETE:
     let messageIndex;
@@ -56,6 +55,8 @@ const messages = (state = initialState, action) => {
       }
     }
 
+    delete messagesById[action.message.id];
+
     return Object.assign({}, state, {
       messages: [
         ...state.messages.slice(0, messageIndex),
@@ -63,7 +64,7 @@ const messages = (state = initialState, action) => {
       ]
     });
   case CONNECT:
-    userInfo[action.user.id].online = true;
+    usersById[action.user.id].online = true;
 
     return Object.assign({}, state, {
       messages: [
@@ -75,7 +76,7 @@ const messages = (state = initialState, action) => {
       ]
     });
   case DISCONNECT:
-    userInfo[action.user.id].online = false;
+    usersById[action.user.id].online = false;
 
     return Object.assign({}, state, {
       messages: [
@@ -88,15 +89,15 @@ const messages = (state = initialState, action) => {
     });
   case UPDATE:
     if (action.message) {
-      messageStorage[action.message.id].text = action.message.text;
+      messagesById[action.message.id].text = action.message.text;
 
       return Object.assign({}, state);
     }
 
     if (action.user) {
-      const previousDisplayName = userInfo[action.user.id].display_name;
+      const previousDisplayName = usersById[action.user.id].display_name;
 
-      userInfo[action.user.id].display_name = action.user.display_name;
+      usersById[action.user.id].display_name = action.user.display_name;
 
       return Object.assign({}, state, {
         messages: [

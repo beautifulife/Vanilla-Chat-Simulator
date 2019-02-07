@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.scss';
-
 import SimulatorContainer from '../containers/Simulator_container';
 
 class App extends Component {

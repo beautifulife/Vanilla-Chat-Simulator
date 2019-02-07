@@ -3,7 +3,7 @@ import Simulator from '../components/Simulator';
 
 const mapStateToProps = state => ({
   timeLineData: state.messages,
-  userInfo: state.userInfo
+  userInfo: state.usersById
 });
 
 const mapDispatchToProps = dispatch => ({

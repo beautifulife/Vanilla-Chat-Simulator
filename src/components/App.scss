@@ -21,24 +21,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
+    padding: 0.4em;
   }
 
   &__footer {
     font-size: 0.8rem;
   }
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 10vmin;
-}
-
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
 }
