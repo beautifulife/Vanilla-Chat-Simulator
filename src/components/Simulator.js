@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import './Simulator.scss';
 import {
   MESSAGE,
@@ -8,12 +9,18 @@ import {
 } from '../actions/actionTypes';
 
 export default class Simulator extends Component {
+  constructor(props) {
+    super(props);
+
+    this.lastMessage = React.createRef();
+  }
+
   componentDidUpdate() {
     this.scrollToBottom();
   }
 
   scrollToBottom() {
-    this.lastMessage.scrollIntoView({ behavior: 'smooth' });
+    this.lastMessage.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   render() {
@@ -112,7 +119,7 @@ export default class Simulator extends Component {
           {renderTimeLineData()}
           <div
             className="Simulator__history__bottom"
-            ref={(ref) => { this.lastMessage = ref; }}
+            ref={this.lastMessage}
           />
         </div>
         <div className="Simulator__input">
@@ -122,3 +129,9 @@ export default class Simulator extends Component {
     );
   }
 }
+
+Simulator.propTypes = {
+  timeLineData: PropTypes.instanceOf(Array).isRequired,
+  userInfo: PropTypes.instanceOf(Object).isRequired,
+  initSimulator: PropTypes.func.isRequired
+};
