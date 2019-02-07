@@ -33,7 +33,7 @@ export default class Simulator extends Component {
             return (
               <div className="Simulator__history__message">
                 <span className="Simulator__history__message__name">{userInfo[userId].display_name}</span>
-                <p className="Simulator__history__message__text">&#x279C;&nbsp;{message.text}</p>
+                <p className="Simulator__history__message__text"><span>&#x279C;</span>&nbsp;{message.text}</p>
               </div>
             );
           case CONNECT:
@@ -67,12 +67,10 @@ export default class Simulator extends Component {
               </div>
             );
           default:
-            console.log(appData, type);
+            console.error('wrong type', type, 'is occured');
 
             return (
-              <div>
-                <span>!!!!!!!!wrong type occured!!!!!!!!</span>
-              </div>
+              <span />
             );
           }
         };

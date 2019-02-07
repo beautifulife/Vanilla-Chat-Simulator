@@ -16,7 +16,9 @@
   }
 
   &__users {
+    overflow: auto;
     padding: 1em 0.5em;
+    height: 18px;
     text-align: left;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 0.9rem;
@@ -50,7 +52,9 @@
       }
 
       p {
-
+        span {
+          color: #5af78d;
+        }
       }
     }
 
