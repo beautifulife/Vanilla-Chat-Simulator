@@ -52,33 +52,33 @@ export default class Chat extends Component {
               newText = (
                 <span>
                   {
-                    newText.split('*').map((split, index, array) => {
-                      const textKeyIndex = split + index.toString();
+                    newText.split('*').map((chunk, index, array) => {
+                      const textKeyIndex = chunk + index.toString();
 
                       if (index % 2 === 1 || index === array.length - 1) {
-                        return <span key={textKeyIndex}>{split}</span>;
+                        return <span key={textKeyIndex}>{chunk}</span>;
                       }
 
                       if (index % 2 === 1) {
-                        return <b key={textKeyIndex}>{split}</b>;
+                        return <b key={textKeyIndex}>{chunk}</b>;
                       }
                     })
                   }
                 </span>
               );
-            } else if (/(\_)/.exec(newText)) {
+            } else if (/^\_/.exec(newText)) {
               newText = (
                 <span>
                   {
-                    newText.split('_').map((split, index, array) => {
-                      const textKeyIndex = split + index.toString();
+                    newText.split('_').map((chunk, index, array) => {
+                      const textKeyIndex = chunk + index.toString();
 
                       if (index % 2 === 1 || index === array.length - 1) {
-                        return <span key={textKeyIndex}>{split}</span>;
+                        return <span key={textKeyIndex}>{chunk}</span>;
                       }
 
                       if (index % 2 === 1) {
-                        return <i key={textKeyIndex}>{split}</i>;
+                        return <i key={textKeyIndex}>{chunk}</i>;
                       }
                     })
                   }

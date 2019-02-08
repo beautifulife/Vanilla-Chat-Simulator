@@ -2,8 +2,8 @@
   flex: 1;
   overflow: auto;
   text-align: left;
-  margin: 0.5em;
-  font-size: 0.9rem;
+  margin: .5em;
+  font-size: .9rem;
 
   div {
     margin-bottom: 1rem;
@@ -25,7 +25,7 @@
 
   &__connect, &__disconnect {
     text-align: center;
-    font-size: 0.8rem;
+    font-size: .8rem;
 
     &__message {
       span {
@@ -54,7 +54,7 @@
 
   &__update {
     text-align: center;
-    font-size: 0.8rem;
+    font-size: .8rem;
 
     span {
       margin: 0 5px;

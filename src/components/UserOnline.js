@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './UserOnline.scss';
 
-const UserOnline = ({ userInfo = {} }) => {
+const UserOnline = ({ userInfo }) => {
   const renderUserOnlineInfo = () => {
     const userNow = Object.values(userInfo);
 
