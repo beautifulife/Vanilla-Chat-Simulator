@@ -66,6 +66,24 @@ export default class Chat extends Component {
                   }
                 </span>
               );
+            } else if (/(\_)/.exec(newText)) {
+              newText = (
+                <span>
+                  {
+                    newText.split('_').map((split, index, array) => {
+                      const textKeyIndex = split + index.toString();
+
+                      if (index % 2 === 1 || index === array.length - 1) {
+                        return <span key={textKeyIndex}>{split}</span>;
+                      }
+
+                      if (index % 2 === 1) {
+                        return <i key={textKeyIndex}>{split}</i>;
+                      }
+                    })
+                  }
+                </span>
+              );
             }
 
             return (
