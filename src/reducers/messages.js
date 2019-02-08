@@ -44,6 +44,7 @@ const messages = (state = initialState, action) => {
       usersById,
       messagesById
     };
+
   case DELETE:
     let messageIndex;
 
@@ -63,6 +64,7 @@ const messages = (state = initialState, action) => {
         ...state.messages.slice(messageIndex + 1)
       ]
     });
+
   case CONNECT:
     usersById[action.user.id].online = true;
 
@@ -75,6 +77,7 @@ const messages = (state = initialState, action) => {
         }
       ]
     });
+
   case DISCONNECT:
     usersById[action.user.id].online = false;
 
@@ -87,6 +90,7 @@ const messages = (state = initialState, action) => {
         }
       ]
     });
+
   case UPDATE:
     if (action.message) {
       messagesById[action.message.id].text = action.message.text;
@@ -112,6 +116,7 @@ const messages = (state = initialState, action) => {
     }
 
     break;
+
   default:
     return state;
   }

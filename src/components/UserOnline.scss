@@ -1,0 +1,19 @@
+.UserOnline {
+  overflow: auto;
+  text-align: left;
+  height: 18px;
+  padding: 1em 0.5em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+
+  &__empty {
+    text-align: center;
+  }
+
+  &__online {
+    margin-right: 10px;
+    padding: 0.5em;
+    border-radius: 10px;
+    background-color: rgba(211, 211, 211, 0.3)
+  }
+}
